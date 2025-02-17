@@ -1,0 +1,10 @@
+torch
+transformers
+torchaudio
+outetts==0.2.3
+uroman
+numpy
+inflect
+IPython
+build
+tqdm

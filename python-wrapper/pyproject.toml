@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "yarngpt"
+version = "0.1.5"
+description = "A Python wrapper for YarnGPT text-to-speech model"
+readme = "README.md"
+requires-python = ">=3.6"
+license = { file = "LICENSE" }
+authors = [
+  { name = "Abayomi Olagunju", email = "olagunjujeremiah@gmail.com" }
+]
+urls = { "Homepage" = "https://github.com/jerryola1" }
+dependencies = [
+  "torch",
+  "transformers",
+  "torchaudio",
+  "outetts==0.2.3",
+  "uroman",
+  "numpy",
+  "inflect",
+  "IPython",
+  "tqdm"
+]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License"
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["yarngpt", "yarngpt.*", "default_speakers"]
+exclude = [
+  "models",
+  "dist",
+  "env",
+  "testenv",
+  "tests",
+  "__pycache__",
+  "yarngpt.egg-info",
+  "freshenv"
+]
+
+[tool.setuptools]
+py-modules = ["audiotokenizer"]
+
+[tool.setuptools.package-data]
+default_speakers = ["*.json"]
