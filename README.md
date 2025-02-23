@@ -5,14 +5,10 @@ A text-to-speech model generating natural Nigerian-accented English speech. Buil
 ## Quick Start
 
 ```python
-# clone the YarnGPT repo to get access to the `audiotokenizer`
 !git clone https://github.com/saheedniyi02/yarngpt.git
 
+pip install outetts uroman
 
-# install some necessary libraries
-!pip install outetts==0.2.3 uroman
-
-#import some important packages 
 import os
 import re
 import json
@@ -25,55 +21,46 @@ import torchaudio
 import IPython
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from outetts.wav_tokenizer.decoder import WavTokenizer
-from yarngpt.audiotokenizer import AudioTokenizer
 
 
-# download the wavtokenizer weights and config (to encode and decode the audio)
 !wget https://huggingface.co/novateur/WavTokenizer-medium-speech-75token/resolve/main/wavtokenizer_mediumdata_frame75_3s_nq1_code4096_dim512_kmeans200_attn.yaml
 !wget https://huggingface.co/novateur/WavTokenizer-large-speech-75token/resolve/main/wavtokenizer_large_speech_320_24k.ckpt
 
-# model path and wavtokenizer weight path (the paths are assumed based on Google colab, a different environment might save the weights to a different location).
-hf_path="saheedniyi/YarnGPT"
+
+from yarngpt.audiotokenizer import AudioTokenizerV2
+
+tokenizer_path="saheedniyi/YarnGPT2"
 wav_tokenizer_config_path="/content/wavtokenizer_mediumdata_frame75_3s_nq1_code4096_dim512_kmeans200_attn.yaml"
 wav_tokenizer_model_path = "/content/wavtokenizer_large_speech_320_24k.ckpt"
 
-# create the AudioTokenizer object 
-audio_tokenizer=AudioTokenizer(
-    hf_path,wav_tokenizer_model_path,wav_tokenizer_config_path
-)
 
-#load the model weights
+audio_tokenizer=AudioTokenizerV2(
+    tokenizer_path,wav_tokenizer_model_path,wav_tokenizer_config_path
+    )
 
-model = AutoModelForCausalLM.from_pretrained(hf_path,torch_dtype="auto").to(audio_tokenizer.device)
 
-# your input text
-text="Uhm, so, what was the inspiration behind your latest project? Like, was there a specific moment where you were like, 'Yeah, this is it!' Or, you know, did it just kind of, uh, come together naturally over time?"
+model = AutoModelForCausalLM.from_pretrained(tokenizer_path,torch_dtype="auto").to(audio_tokenizer.device)
 
-# creating a prompt, when creating a prompt, there is an optional `speaker_name` parameter, the possible speakers are "idera","emma","onye","jude","osagie","tayo","zainab","joke","regina","remi","umar","chinenye" if no speaker is selected a speaker is chosen at random 
-prompt=audio_tokenizer.create_prompt(text,"idera")
+#change the text
+text="The election was won by businessman and politician, Moshood Abiola, but Babangida annulled the results, citing concerns over national security."
 
-# tokenize the prompt
+# change the language and voice
+prompt=audio_tokenizer.create_prompt(text,lang="english",speaker_name="idera")
+
 input_ids=audio_tokenizer.tokenize_prompt(prompt)
 
-# generate output from the model, you can tune the `.generate` parameters as you wish
 output  = model.generate(
             input_ids=input_ids,
             temperature=0.1,
             repetition_penalty=1.1,
             max_length=4000,
+            #num_beams=5,# using a beam size helps for the local languages sometimes but not english
         )
 
-# convert the output to "audio codes"
 codes=audio_tokenizer.get_codes(output)
-
-# converts the codes to audio 
 audio=audio_tokenizer.get_audio(codes)
-
-# play the audio
 IPython.display.Audio(audio,rate=24000)
-
-# save the audio 
-torchaudio.save(f"audio.wav", audio, sample_rate=24000)
+torchaudio.save(f"Sample.wav", audio, sample_rate=24000)
 ```
 
 ## Features
