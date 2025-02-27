@@ -5,6 +5,7 @@ A text-to-speech model generating natural Nigerian-accented English speech. Buil
 ## Quick Start
 
 ```python
+
 !git clone https://github.com/saheedniyi02/yarngpt.git
 
 pip install outetts uroman
@@ -54,13 +55,14 @@ output  = model.generate(
             temperature=0.1,
             repetition_penalty=1.1,
             max_length=4000,
-            #num_beams=5,# using a beam size helps for the local languages sometimes but not english
+            #num_beams=5,# using a beam size helps for the local languages but not english
         )
 
 codes=audio_tokenizer.get_codes(output)
 audio=audio_tokenizer.get_audio(codes)
 IPython.display.Audio(audio,rate=24000)
 torchaudio.save(f"Sample.wav", audio, sample_rate=24000)
+
 ```
 
 ## Features
