@@ -2,6 +2,8 @@
 ![image/png](https://github.com/saheedniyi02/yarngpt/blob/main/notebooks%2Faudio_0c026c21-f432-4d20-a86b-899a10d9ed60.webp)
 A text-to-speech model generating natural Nigerian-accented English speech. Built on pure language modeling without external adapters.
 
+Web Url: https://yarngpt.co/
+
 ## Quick Start
 
 ```python
