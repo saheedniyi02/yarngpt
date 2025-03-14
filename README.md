@@ -27,7 +27,7 @@ from outetts.wav_tokenizer.decoder import WavTokenizer
 
 
 !wget https://huggingface.co/novateur/WavTokenizer-medium-speech-75token/resolve/main/wavtokenizer_mediumdata_frame75_3s_nq1_code4096_dim512_kmeans200_attn.yaml
-!wget https://huggingface.co/novateur/WavTokenizer-large-speech-75token/resolve/main/wavtokenizer_large_speech_320_24k.ckpt
+!gdown 1-ASeEkrn4HY49yZWHTASgfGFNXdVnLTt
 
 
 from yarngpt.audiotokenizer import AudioTokenizerV2
